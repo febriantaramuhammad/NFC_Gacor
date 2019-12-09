@@ -104,7 +104,7 @@ public class TapProdukActivity extends AppCompatActivity {
                     (AppUtil.replaceNull("No. User : "+nama)),
                     (AppUtil.replaceNull("Pembayaran " + produk.getNamaProduk())),
                     (AppUtil.replaceNull("Rp "+ String.valueOf(hargaproduk))),
-                    (AppUtil.replaceNull("Debet"))
+                    (AppUtil.replaceNull("Credit"))
 
 
 

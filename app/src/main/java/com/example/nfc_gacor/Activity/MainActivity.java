@@ -24,10 +24,10 @@ MaterialRippleLayout mt1, mt2, mt3, mt4, mt5;
         mt3 = findViewById(R.id.material_refund);
         mt4 = findViewById(R.id.material_audit);
         mt5 = findViewById(R.id.material_about);
-//        btntopup=findViewById(R.id.btntopup);
-//        btnbayar= findViewById(R.id.btnbayar);
-//        btnaudit = findViewById(R.id.btnaudit);
-//        btnrefund= findViewById(R.id.btnrefund);
+        btntopup=findViewById(R.id.btntopup);
+        btnbayar= findViewById(R.id.btnbayar);
+        btnaudit = findViewById(R.id.btnaudit);
+        btnrefund= findViewById(R.id.btnrefund);
         mt1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -35,6 +35,14 @@ MaterialRippleLayout mt1, mt2, mt3, mt4, mt5;
                 startActivity(i);
             }
         });
+        btntopup.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent i = new Intent(MainActivity.this, TopUpActivity.class);
+                startActivity(i);
+            }
+        });
+
         mt2.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -42,6 +50,14 @@ MaterialRippleLayout mt1, mt2, mt3, mt4, mt5;
                 startActivity(i);
             }
         });
+        btnbayar.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent i = new Intent(MainActivity.this, ProdukActivity.class);
+                startActivity(i);
+            }
+        });
+
         mt3.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -49,7 +65,22 @@ MaterialRippleLayout mt1, mt2, mt3, mt4, mt5;
                 startActivity(i);
             }
         });
+        btnrefund.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent i = new Intent(MainActivity.this, RefundActivity.class);
+                startActivity(i);
+            }
+        });
+
         mt4.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent i = new Intent(MainActivity.this, AuditActivity.class);
+                startActivity(i);
+            }
+        });
+        btnaudit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent i = new Intent(MainActivity.this, AuditActivity.class);
