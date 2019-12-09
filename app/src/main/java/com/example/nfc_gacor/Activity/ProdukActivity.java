@@ -1,4 +1,4 @@
-package com.example.nfc_gacor;
+package com.example.nfc_gacor.Activity;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.DefaultItemAnimator;
@@ -10,13 +10,17 @@ import android.widget.Toast;
 
 import com.example.nfc_gacor.APIService.APIClient;
 import com.example.nfc_gacor.APIService.APIInterfacesRest;
-import com.example.nfc_gacor.adapter.PembayaranAdapter;
-import com.example.nfc_gacor.adapter.TopUpAdapter;
+import com.example.nfc_gacor.R;
+import com.example.nfc_gacor.adapter.ProdukAdapter;
 
 import com.example.nfc_gacor.model.produk.ModelProduk;
+import com.example.nfc_gacor.model.produk.Produk;
+import com.raizlabs.android.dbflow.sql.language.SQLite;
 
 
 import org.json.JSONObject;
+
+import java.util.List;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -24,14 +28,14 @@ import retrofit2.Response;
 
 public class ProdukActivity extends AppCompatActivity {
 RecyclerView rcv;
-PembayaranAdapter itemList2;
+ProdukAdapter itemList2;
     ModelProduk modelproduk;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_produk);
-        rcv= findViewById(R.id.rcv);
+        rcv = findViewById(R.id.rcv);
         getProduk();
     }
 
@@ -45,13 +49,15 @@ PembayaranAdapter itemList2;
                modelproduk =  response.body();
 
                 if (response.body() != null) {
+                    for(int i = 0; i<modelproduk.getData().getProduk().size(); i++) {
+                        modelproduk.getData().getProduk().get(i).save();
+                    }
 
+                    List<Produk> model = SQLite.select()
+                            .from(Produk.class)
+                            .queryList();
 
-                   /* List<Row> model = SQLite.select()
-                            .from(Row.class)
-                            .queryList(); */
-
-                     itemList2 = new PembayaranAdapter(modelproduk.getData().getProduk());
+                     itemList2 = new ProdukAdapter(model);
                     rcv.setLayoutManager(new LinearLayoutManager(ProdukActivity.this));
                     rcv.setItemAnimator(new DefaultItemAnimator());
                     rcv.setAdapter(itemList2);
@@ -68,13 +74,13 @@ PembayaranAdapter itemList2;
             @Override
             public void onFailure(Call <ModelProduk> call, Throwable t) {
 
-              /*  List<Player> model = SQLite.select()
-                        .from(Player.class)
+                List<Produk> model = SQLite.select()
+                        .from(Produk.class)
                         .queryList();
 
-                itemList = new SurveyAdapter(model);
-                rv.setLayoutManager(new LinearLayoutManager(MainActivity.this));
-                rv.setAdapter(itemList); */
+                itemList2 = new ProdukAdapter(model);
+                rcv.setLayoutManager(new LinearLayoutManager(ProdukActivity.this));
+                rcv.setAdapter(itemList2);
 
                 Toast.makeText(ProdukActivity.this, "Terjadi gangguan koneksi", Toast.LENGTH_LONG).show();
                 call.cancel();

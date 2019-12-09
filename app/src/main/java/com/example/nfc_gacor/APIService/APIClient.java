@@ -3,7 +3,7 @@ package com.example.nfc_gacor.APIService;
 
 
 
-import com.example.nfc_gacor.utility.utility.StringConverter;
+import com.example.nfc_gacor.utility.StringConverter;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
@@ -27,17 +27,17 @@ public class APIClient {
     public static Retrofit getClient() {
 
 
-    /* Interceptor interceptor = new Interceptor() {
+        Interceptor interceptor = new Interceptor() {
             @Override
             public okhttp3.Response intercept(Chain chain) throws IOException {
-                Request newRequest = chain.request().newBuilder().build();
+                Request newRequest = chain.request().newBuilder().addHeader("X-Api-Key", "5965E901D62F1F7913717CCF9347443B").build();
                 return chain.proceed(newRequest);
             }
         };
-*/
 
-       HttpLoggingInterceptor interceptor = new HttpLoggingInterceptor();
-        interceptor.setLevel(HttpLoggingInterceptor.Level.BODY);
+
+     /*  HttpLoggingInterceptor interceptor = new HttpLoggingInterceptor();
+        interceptor.setLevel(HttpLoggingInterceptor.Level.BODY);*/
         OkHttpClient client = new OkHttpClient.Builder().addInterceptor(interceptor).build();
 
         GsonBuilder gb = new GsonBuilder();

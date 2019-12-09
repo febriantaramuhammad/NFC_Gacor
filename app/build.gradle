@@ -42,8 +42,34 @@ dependencies {
     implementation 'com.squareup.okhttp3:logging-interceptor:3.4.1'
     implementation 'com.squareup.retrofit2:converter-gson:2.6.2'
     implementation 'com.squareup.retrofit2:converter-scalars:2.6.2'
-    // implementation 'com.github.jrizani:JRDateTimePicker:1.0'
     implementation 'com.github.angads25:filepicker:1.1.1'
     implementation 'com.airbnb.android:lottie:2.7.0'
-    //implementation 'com.github.mayuce:LottieAlertDialog:1.1'
+    implementation 'de.hdodenhof:circleimageview:3.0.1'
+    implementation 'com.github.bumptech.glide:glide:4.9.0'
+
+}
+
+def dbflow_version = "4.2.4"
+// or 10-digit short-hash of a specific commit. (Useful for bugs fixed in develop, but not in a release yet)
+
+dependencies {
+    annotationProcessor "com.github.Raizlabs.DBFlow:dbflow-processor:${dbflow_version}"
+    implementation "com.github.Raizlabs.DBFlow:dbflow-core:${dbflow_version}"
+    implementation "com.github.Raizlabs.DBFlow:dbflow:${dbflow_version}"
+    // adds generated content provider annotations + support.
+}
+
+dependencies {
+    implementation 'androidx.appcompat:appcompat:+'
+    implementation 'androidx.constraintlayout:constraintlayout:+'
+}
+
+dependencies {
+    implementation 'androidx.appcompat:appcompat:+'
+    implementation 'androidx.constraintlayout:constraintlayout:+'
+}
+
+dependencies {
+    implementation 'androidx.appcompat:appcompat:+'
+    implementation 'androidx.constraintlayout:constraintlayout:+'
 }

@@ -5,18 +5,28 @@ import java.io.Serializable;
 import android.os.Parcel;
 import android.os.Parcelable;
 import android.os.Parcelable.Creator;
+
+import com.example.nfc_gacor.AppController;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
+import com.raizlabs.android.dbflow.annotation.Column;
+import com.raizlabs.android.dbflow.annotation.PrimaryKey;
+import com.raizlabs.android.dbflow.annotation.Table;
+import com.raizlabs.android.dbflow.structure.BaseModel;
 
-public class Topup implements Serializable, Parcelable
+@Table(database = AppController.class)
+public class Topup extends BaseModel implements Serializable, Parcelable
 {
-
+@PrimaryKey
+@Column
     @SerializedName("id")
     @Expose
     private String id;
+    @Column
     @SerializedName("nominal")
     @Expose
     private String nominal;
+    @Column
     @SerializedName("harga")
     @Expose
     private String harga;

@@ -1,4 +1,4 @@
-package com.example.nfc_gacor;
+package com.example.nfc_gacor.Activity;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.DefaultItemAnimator;
@@ -12,35 +12,41 @@ import android.nfc.NfcAdapter;
 import android.nfc.Tag;
 import android.nfc.tech.Ndef;
 import android.os.Bundle;
-import android.util.Log;
+import android.view.View;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.Toast;
 
 import com.example.nfc_gacor.APIService.APIClient;
 import com.example.nfc_gacor.APIService.APIInterfacesRest;
+import com.example.nfc_gacor.Interface.Listener;
+import com.example.nfc_gacor.R;
 import com.example.nfc_gacor.adapter.TopUpAdapter;
 import com.example.nfc_gacor.model.topup.ModelTopup;
+import com.example.nfc_gacor.model.topup.Topup;
+import com.raizlabs.android.dbflow.sql.language.SQLite;
 
 import org.json.JSONObject;
+
+import java.util.List;
 
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class TopUpActivity extends AppCompatActivity implements Listener{
+public class TopUpActivity extends AppCompatActivity implements Listener {
     RecyclerView rcv;
     TopUpAdapter itemList2;
     ModelTopup modeltopup;
-    private Button mBtRead;
+    private Button btRead;
 
-    private HasilTopUpActivity mNfcReadFragment = (HasilTopUpActivity) getSupportFragmentManager().findFragmentByTag(HasilTopUpActivity.TAG);//(HasilTopUpActivity) getFragmentManager().findFragmentByTag(HasilTopUpActivity.TAG);
+    private HasilTopUpActivity mNfcReadFragment = (HasilTopUpActivity) getFragmentManager().findFragmentByTag(HasilTopUpActivity.TAG);//(HasilTopUpActivity) getFragmentManager().findFragmentByTag(HasilTopUpActivity.TAG);
 
     private boolean isDialogDisplayed = false;
     private boolean isRead = false;
+    private boolean isWrite = false;
 
     private NfcAdapter mNfcAdapter;
-
+    private HasilTopUpActivity mNfcWriteFragment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -53,29 +59,49 @@ public class TopUpActivity extends AppCompatActivity implements Listener{
 
         getTopup();
     }
-
+//ngeread fragment
     private void initViews() {
 
         rcv = findViewById(R.id.rcv);
-        mBtRead = findViewById(R.id.btn_read);
+        btRead = findViewById(R.id.btn_read);
 
-        mBtRead.setOnClickListener(view -> showReadFragment());
+        btRead.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                showReadFragment();
+            }
+        });
     }
-
+//method nfc adapter
     private void initNFC(){
 
         mNfcAdapter = NfcAdapter.getDefaultAdapter(this);
     }
-
+//method untuk nge show fragment
     private void showReadFragment() {
 
-        mNfcReadFragment = (HasilTopUpActivity) getSupportFragmentManager().findFragmentByTag(HasilTopUpActivity.TAG);
-
+       mNfcReadFragment = (HasilTopUpActivity) getFragmentManager().findFragmentByTag(HasilTopUpActivity.TAG);
+//jika read fragment null
         if (mNfcReadFragment == null) {
-
-            mNfcReadFragment = HasilTopUpActivity.newInstance();
+//new instance dari hasil top up activity
+           mNfcReadFragment = HasilTopUpActivity.newInstance();
         }
+        //show get fragment dari hasil top up activity
         mNfcReadFragment.show(getFragmentManager(),HasilTopUpActivity.TAG);
+
+    }
+//method untuk write nfc
+    private void showWriteFragment() {
+
+        isWrite = true;
+
+        mNfcWriteFragment = (HasilTopUpActivity) getFragmentManager().findFragmentByTag(HasilTopUpActivity.TAG);
+
+        if (mNfcWriteFragment == null) {
+
+            mNfcWriteFragment = HasilTopUpActivity.newInstance();
+        }
+        mNfcWriteFragment.show(getFragmentManager(),HasilTopUpActivity.TAG);
 
     }
 
@@ -92,6 +118,7 @@ public class TopUpActivity extends AppCompatActivity implements Listener{
     @Override
     protected void onResume() {
         super.onResume();
+        //Intent
         IntentFilter tagDetected = new IntentFilter(NfcAdapter.ACTION_TAG_DISCOVERED);
         IntentFilter ndefDetected = new IntentFilter(NfcAdapter.ACTION_NDEF_DISCOVERED);
         IntentFilter techDetected = new IntentFilter(NfcAdapter.ACTION_TECH_DISCOVERED);
@@ -113,11 +140,12 @@ public class TopUpActivity extends AppCompatActivity implements Listener{
 
     @Override
     protected void onNewIntent(Intent intent) {
+        super.onNewIntent(intent);
         Tag tag = intent.getParcelableExtra(NfcAdapter.EXTRA_TAG);
 
 //        Log.d(TAG, "onNewIntent: "+intent.getAction());
 
-        if(tag != null) {
+        if (tag != null) {
             Toast.makeText(this, "NFC Tag Detected", Toast.LENGTH_SHORT).show();
             Ndef ndef = Ndef.get(tag);
 
@@ -125,11 +153,10 @@ public class TopUpActivity extends AppCompatActivity implements Listener{
 
                 if (isRead) {
 
-                    mNfcReadFragment = (HasilTopUpActivity) getSupportFragmentManager().findFragmentByTag(HasilTopUpActivity.TAG);
+                    mNfcReadFragment = (HasilTopUpActivity) getFragmentManager().findFragmentByTag(HasilTopUpActivity.TAG);//mNfcReadFragment = (HasilTopUpActivity) getFragmentManager().findFragmentByTag(HasilTopUpActivity.TAG);
                     mNfcReadFragment.onNfcDetected(ndef);
 
                 } else {
-
 
                 }
             }
@@ -150,12 +177,16 @@ public class TopUpActivity extends AppCompatActivity implements Listener{
 
                 if (response.body() != null) {
 
+                        for(int i = 0; i<modeltopup.getData().getTopup().size(); i++) {
+                            modeltopup.getData().getTopup().get(i).save();
+                        }
 
-                   /* List<Row> model = SQLite.select()
-                            .from(Row.class)
-                            .queryList(); */
 
-                    itemList2 = new TopUpAdapter(modeltopup.getData().getTopup());
+                   List<Topup> model = SQLite.select()
+                            .from(Topup.class)
+                            .queryList();
+
+                    itemList2 = new TopUpAdapter(model);
                     rcv.setLayoutManager(new LinearLayoutManager(TopUpActivity.this));
                     rcv.setItemAnimator(new DefaultItemAnimator());
                     rcv.setAdapter(itemList2);
@@ -172,13 +203,13 @@ public class TopUpActivity extends AppCompatActivity implements Listener{
             @Override
             public void onFailure(Call <ModelTopup> call, Throwable t) {
 
-              /*  List<Player> model = SQLite.select()
-                        .from(Player.class)
+               List<Topup> model = SQLite.select()
+                        .from(Topup.class)
                         .queryList();
 
-                itemList = new SurveyAdapter(model);
-                rv.setLayoutManager(new LinearLayoutManager(MainActivity.this));
-                rv.setAdapter(itemList); */
+                itemList2 = new TopUpAdapter(model);
+                rcv.setLayoutManager(new LinearLayoutManager(TopUpActivity.this));
+                rcv.setAdapter(itemList2);
 
                 Toast.makeText(TopUpActivity.this, "Terjadi gangguan koneksi", Toast.LENGTH_LONG).show();
                 call.cancel();

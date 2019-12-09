@@ -5,17 +5,53 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context=".MainActivity">
+    tools:context=".Activity.MainActivity"
+    >
 
-    <Button
+    <ImageButton
         android:id="@+id/btntopup"
-        android:layout_width="match_parent"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:background="@drawable/topup"
+        android:layout_gravity="center"
+        android:layout_marginTop="150dp"
+        />
+
+    <TextView
+        android:id="@+id/textView"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Button" />
+        android:text="Top Up"
+        android:textColor="#000"
+        android:layout_gravity="center_horizontal"/>
+
+    <ImageButton
+        android:id="@+id/btnbayar"
+        android:layout_width="120dp"
+        android:layout_height="115dp"
+        android:layout_marginTop="50dp"
+        android:background="@drawable/keranjang"
+        android:layout_gravity="center"
+        />
+
+    <TextView
+        android:id="@+id/textView1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Belanja"
+        android:textColor="#000"
+        android:layout_gravity="center_horizontal"/>
 
     <Button
-        android:id="@+id/btnbayar"
+        android:id="@+id/btnaudit"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Button" />
+        android:text="Audit" />
+
+    <Button
+        android:id="@+id/btnrefund"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Refund" />
+
 </LinearLayout>

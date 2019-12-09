@@ -9,11 +9,16 @@ package com.example.nfc_gacor.APIService;
 
 
 
+import com.example.nfc_gacor.model.audit.ModelAudit;
+import com.example.nfc_gacor.model.audit.ModelPost;
 import com.example.nfc_gacor.model.produk.ModelProduk;
 import com.example.nfc_gacor.model.topup.ModelTopup;
+import com.raizlabs.android.dbflow.annotation.Unique;
 
 import okhttp3.RequestBody;
 import retrofit2.Call;
+import retrofit2.http.Field;
+import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.GET;
 import retrofit2.http.Multipart;
 import retrofit2.http.POST;
@@ -31,50 +36,18 @@ public interface APIInterfacesRest {
  @GET("topup/all")
  Call<ModelTopup> getTopup(@Query ("X-Api-Key") String apikey);
 
+ @GET("audit/all")
+ Call<ModelAudit> getAudit(@Query ("X-Api-Key") String apikey);
 
 
 
 
- /*@POST("api/survey/add")
- Call<ModelPOST> setData(@Field("id") String id,
-                         @Field("dari") String dari,
-                         @Field("text") String text,
-                         @Field("time") String time,
-                         @Field("status") String status);
-
- @Multipart
- @POST("player/add")
- Call<ModelPlayer> sendDataPlayer(
-
-         @Part("name") RequestBody nama,
-         @Part("email") RequestBody alamat,
-         @Part("handphone") RequestBody umur,
-         // @Part MultipartBody.Part foto,
-         @Part("password") RequestBody password,
-         @Part("repassword") RequestBody repassword
-
- );
-
- @GET("skill/all")
-    Call<ModelSkill> getSkill(@Query("api-key") String apikey);
-
- @GET("roles/all")
- Call<ModelRole> getRoll(@Query("api-key") String apikey);
-
- @GET("room/all")
- Call<ModelRoom> getRoom(@Query("api-key") String apikey);
- @Multipart
- @POST("room/add")
- Call<ModelRoom> sendRoom(
-
-         @Part("room_name") RequestBody nama,
-         @Part("player") RequestBody player,
-         @Part("status") RequestBody status
-         // @Part MultipartBody.Part foto,
-         //@Part("password") RequestBody password,
-         // @Part("repassword") RequestBody repassword
-
- ); */
+@FormUrlEncoded
+ @POST("audit/add")
+ Call<ModelPost> sendAudit(@Field("nama_user") String nama_user,
+                         @Field("keterangan") String keterangan,
+                         @Field("nominal") String nominal,
+                         @Field("debet_credit") String debet_credit);
 
 }
 

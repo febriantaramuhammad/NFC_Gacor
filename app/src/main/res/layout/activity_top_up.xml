@@ -5,18 +5,19 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context=".TopUpActivity">
+    tools:context=".Activity.TopUpActivity"
+    android:background="#FFFF">
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rcv"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+        android:layout_height="match_parent" />
 
     <Button
         android:id="@+id/btn_read"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
+        android:layout_marginTop="10000dp"
         android:text="Info Saldo"
         android:layout_gravity="center_horizontal"
         style="@style/Widget.AppCompat.Button.Colored"/>
